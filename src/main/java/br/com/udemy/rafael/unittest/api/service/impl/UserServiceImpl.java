@@ -1,6 +1,7 @@
 package br.com.udemy.rafael.unittest.api.service.impl;
 
 import br.com.udemy.rafael.unittest.api.service.UserService;
+import br.com.udemy.rafael.unittest.api.service.exceptions.ObjectNotFoundException;
 import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         Optional<User> user = repository.findById(id);
-        return user.orElse(null);
+        return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
     }
 }
