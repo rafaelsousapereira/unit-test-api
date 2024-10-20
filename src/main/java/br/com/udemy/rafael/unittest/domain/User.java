@@ -1,4 +1,4 @@
-package br.com.udemy.rafael.unittest.api.domain;
+package br.com.udemy.rafael.unittest.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,19 +9,16 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(schema = "user")
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     private String name;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
 }
-
-
