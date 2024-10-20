@@ -1,6 +1,6 @@
-package br.com.udemy.rafael.unittest.api.controller.sevice.impl;
+package br.com.udemy.rafael.unittest.api.service.impl;
 
-import br.com.udemy.rafael.unittest.api.controller.sevice.UserService;
+import br.com.udemy.rafael.unittest.api.service.UserService;
 import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

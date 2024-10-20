@@ -1,4 +1,4 @@
-package br.com.udemy.rafael.unittest.api.controller.sevice;
+package br.com.udemy.rafael.unittest.api.service;
 
 import br.com.udemy.rafael.unittest.domain.User;
 

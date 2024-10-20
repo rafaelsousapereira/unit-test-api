@@ -1,6 +1,6 @@
 package br.com.udemy.rafael.unittest.api.controller;
 
-import br.com.udemy.rafael.unittest.api.controller.sevice.UserService;
+import br.com.udemy.rafael.unittest.api.service.UserService;
 import br.com.udemy.rafael.unittest.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
