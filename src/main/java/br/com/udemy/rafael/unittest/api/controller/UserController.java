@@ -1,16 +1,14 @@
 package br.com.udemy.rafael.unittest.api.controller;
 
 import br.com.udemy.rafael.unittest.api.service.UserService;
-import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.domain.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,7 +34,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok()
-                .body(service.findAll().stream().map(user -> mapper.map(user, UserDTO.class)).toList());
+        return ResponseEntity.ok().body(service.findAll().stream().map(user -> mapper.map(user, UserDTO.class)).toList());
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO dto) {
+        var newUser = this.service.create(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(this.mapper.map(newUser, UserDTO.class));
     }
 }
