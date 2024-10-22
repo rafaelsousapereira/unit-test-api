@@ -1,6 +1,7 @@
 package br.com.udemy.rafael.unittest.api.service.impl;
 
 import br.com.udemy.rafael.unittest.api.service.UserService;
+import br.com.udemy.rafael.unittest.api.service.exceptions.DataIntegrateViolationException;
 import br.com.udemy.rafael.unittest.api.service.exceptions.ObjectNotFoundException;
 import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.domain.dto.UserDTO;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO dto) {
+        this.findByEmail(dto);
         return this.repository.save(mapper.map(dto, User.class));
     }
 
@@ -38,5 +40,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return this.repository.findAll();
+    }
+
+    private void findByEmail(UserDTO dto) {
+        Optional<User> user = repository.findByEmail(dto.getEmail());
+        if (user.isPresent()) {
+            throw new DataIntegrateViolationException("Email já cadastrado no sistema");
+        }
     }
 }
