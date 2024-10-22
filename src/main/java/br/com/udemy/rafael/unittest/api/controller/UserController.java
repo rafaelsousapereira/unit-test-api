@@ -48,8 +48,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto) {
         dto.setId(id);
-        var saved = this.service.update(dto);
 
-        return ResponseEntity.ok().body(this.mapper.map(saved, UserDTO.class));
+        return ResponseEntity.ok().body(this.mapper.map(this.service.update(dto), UserDTO.class));
     }
 }
