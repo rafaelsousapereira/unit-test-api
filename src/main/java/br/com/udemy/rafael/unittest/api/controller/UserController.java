@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         var user = service.findById(id);
 
         return ResponseEntity.ok().body(mapper.map(user, UserDTO.class));
@@ -50,5 +50,12 @@ public class UserController {
         dto.setId(id);
 
         return ResponseEntity.ok().body(this.mapper.map(this.service.update(dto), UserDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDTO> delete(@PathVariable Long id) {
+        this.service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Integer id) {
+    public User findById(Long id) {
         Optional<User> user = repository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
     }
@@ -47,6 +47,13 @@ public class UserServiceImpl implements UserService {
         this.findByEmail(dto);
 
         return this.repository.save(mapper.map(dto, User.class));
+    }
+
+    @Override
+    public void delete(Long id) {
+        this.findById(id);
+
+        this.repository.deleteById(id);
     }
 
     private void findByEmail(UserDTO dto) {
