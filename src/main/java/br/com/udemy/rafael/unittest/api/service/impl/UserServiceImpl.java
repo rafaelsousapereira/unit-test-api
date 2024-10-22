@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
         return this.repository.findAll();
     }
 
+    @Override
+    public User update(UserDTO dto) {
+        return this.repository.save(mapper.map(dto, User.class));
+    }
+
     private void findByEmail(UserDTO dto) {
         Optional<User> user = repository.findByEmail(dto.getEmail());
         if (user.isPresent()) {
