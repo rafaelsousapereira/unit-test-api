@@ -3,6 +3,7 @@ package br.com.udemy.rafael.unittest.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
