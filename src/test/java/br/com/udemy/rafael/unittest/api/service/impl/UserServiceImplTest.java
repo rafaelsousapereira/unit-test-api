@@ -3,50 +3,64 @@ package br.com.udemy.rafael.unittest.api.service.impl;
 import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.domain.dto.UserDTO;
 import br.com.udemy.rafael.unittest.jpa.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import br.com.udemy.rafael.unittest.stubs.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
-    public static final int ID = 1;
     @InjectMocks
-    private UserServiceImpl userServiceImpl;
+    private UserServiceImpl service;
 
     @Mock
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Mock
     private ModelMapper mapper;
 
-    private User user;
-    private UserDTO userDTO;
-    private Optional<User> userOptional;
+    static User expectedUser;
+    static UserDTO expectedUserDTO;
+    static Optional<User> expectedUserOptional;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        startUsers();
+    static UserStub userStub;
+    static UserDTOStub userDTOStub;
+    static Optional<UserStub> userStubOptional;
+
+    @BeforeAll
+    static void setUp() {
+        userStub = new UserStub();
+        userDTOStub = new UserDTOStub();
+        userStubOptional = Optional.of(userStub);
+
+        expectedUser = userStub.any();
+        expectedUserDTO = userDTOStub.any();
+        expectedUserOptional = Optional.of(expectedUser);
     }
-
-    private ModelMapper modelMapper;
 
     @Test
-    void testFindById() {
-    }
+    void whenFindByIdThenReturnAnUserInstance() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(expectedUserOptional);
 
-    private void startUsers() {
-        user = new User(ID, "Rafael", "rafael@mail.com", "654321");
-        user = new User(ID, "Gabriela", "gabriela@mail.com", "123456");
-        userOptional = Optional.of(new User(ID, "Gabriela", "gabriela@mail.com", "123456"));
+        // Act
+        User actualResponse = this.service.findById(expectedUser.getId());
+        User expected = expectedUserOptional.get();
+
+        // Assert
+        assertEquals(User.class, actualResponse.getClass());
+        assertEquals(expectedUser, actualResponse);
+        assertEquals(expected, actualResponse);
+        assertEquals(expected.getId(), actualResponse.getId());
+        assertEquals(expected.getEmail(), actualResponse.getEmail());
     }
 }
