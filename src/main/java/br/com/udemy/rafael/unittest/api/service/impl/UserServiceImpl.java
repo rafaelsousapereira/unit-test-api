@@ -6,6 +6,7 @@ import br.com.udemy.rafael.unittest.api.service.exceptions.ObjectNotFoundExcepti
 import br.com.udemy.rafael.unittest.domain.User;
 import br.com.udemy.rafael.unittest.domain.dto.UserDTO;
 import br.com.udemy.rafael.unittest.jpa.UserRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        Optional<User> user = repository.findById(id);
+        Optional<User> user = this.repository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
     }
 
@@ -49,11 +50,12 @@ public class UserServiceImpl implements UserService {
         return this.repository.save(mapper.map(dto, User.class));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         this.findById(id);
 
-        this.repository.deleteById(id);
+        this.repository.deleteUserDisable(id);
     }
 
     private void findByEmail(UserDTO dto) {
